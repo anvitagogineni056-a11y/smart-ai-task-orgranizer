@@ -206,7 +206,8 @@
                 // Configures hardware webcam feed metrics
                 const flip = true; 
                 webcam = new tmImage.Webcam(200, 200, flip); 
-                await webcam.setup(); // Triggers browser alert notification prompting permission
+                await webcam.setup();// Triggers browser alert notification prompting permission
+                webcam.webcamElement.setAttribbute('playsinline',true);
                 await webcam.play();
                 window.requestAnimationFrame(loopAI);
 
@@ -302,6 +303,39 @@
                 };
                 reader.readAsDataURL(input.files[0]);
             }
+        }
+       
+        // ... Your existing code like async function init() ...
+        // ... Your existing loop() and predict() functions ...
+
+        // 👇 PASTE THE NEW IMAGE UPLOAD CODE RIGHT HERE:
+        const fileInput = document.querySelector('input[type="file"]') || document.getElementById('image-upload');
+        const displayBox = document.getElementById('webcam-container');
+       
+        if (fileInput) {
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0]; // Fixed a small typo from before!
+                if (!file) return;
+
+                if (webcam) { await webcam.stop(); }
+
+                const imgElement = document.createElement('img');
+                imgElement.src = URL.createObjectURL(file);
+                imgElement.style.width = '100%';
+                imgElement.style.height = '100%';
+                imgElement.style.objectFit = 'contain';
+
+                displayBox.innerHTML = '';
+                displayBox.appendChild(imgElement);
+
+                imgElement.onload = async () => {
+                    const prediction = await model.predict(imgElement);
+                    for (let i = 0; i < maxPredictions; i++) {
+                        const classPrediction = prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(0) + "%";
+                        document.getElementById("label-container").childNodes[i].innerHTML = classPrediction;
+                    }
+                };
+            });
         }
     </script>
 </body>
