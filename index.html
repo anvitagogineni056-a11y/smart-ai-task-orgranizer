@@ -164,15 +164,22 @@ function addTask(){
 
  if(!text.trim()) return;
 
- tasks.push({
-   text,
-   category:
-   category.value,
-   priority:
-   priority.value,
-   date:
-   date.value,
-   done:false
+ const category =
+document.getElementById("category").value;
+
+const priority =
+document.getElementById("priority").value;
+
+const date =
+document.getElementById("date").value;
+
+tasks.push({
+   text: text,
+   category: category,
+   priority: priority,
+   date: date,
+   done: false
+});
  });
 
  document.getElementById("taskInput").value="";
