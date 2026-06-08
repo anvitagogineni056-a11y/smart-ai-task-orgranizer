@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI First Aid Assistant</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f4f7f6;
+    margin:0;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1{color:#00695c}
+
+#camera{
+    margin:15px auto;
+    width:250px;
+    height:250px;
+    background:#222;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+button{
+    margin:5px;
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#00796b;
+    color:white;
+}
+
+button:hover{
+    background:#004d40;
+}
+
+#status{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+#result{
+    margin-top:10px;
+    font-size:14px;
+    color:#333;
+}
+
+#advice{
+    margin-top:20px;
+    text-align:left;
+    background:#eef7f6;
+    padding:15px;
+    border-left:5px solid #00796b;
+    border-radius:8px;
+}
+img{
+    max-width:250px;
+    margin-top:10px;
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>AI First Aid Assistant</h1>
+
+<p><b>Upload image or use camera</b></p>
+
+<button onclick="startCamera()">Start Camera</button>
+<button onclick="stopCamera()">Stop Camera</button>
+
+<input type="file" accept="image/*" onchange="uploadImage(event)"/>
+
+<div id="camera"></div>
+
+<img id="preview" style="display:none"/>
+
+<div id="status">Idle</div>
+<div id="result"></div>
+
+<div id="advice">Waiting for input...</div>
+
+</div>
+
+<script>
+
+const URL = "https://teachablemachine.withgoogle.com/models/rYBYW6RPE/";
+
+let model, webcam;
+
+// ---------------- MODEL LOAD ----------------
+async function loadModel(){
+    if(model) return;
+
+    model = await tmImage.load(
+        URL + "model.json",
+        URL + "metadata.json"
+    );
+}
+
+// ---------------- CAMERA ----------------
+async function startCamera(){
+
+    await loadModel();
+
+    webcam = new tmImage.Webcam(250, 250, true);
+    await webcam.setup();
+    await webcam.play();
+
+    document.getElementById("camera").innerHTML = "";
+    document.getElementById("camera").appendChild(webcam.canvas);
+
+    document.getElementById("status").innerText = "Camera Running";
+
+    loop();
+}
+
+function stopCamera(){
+    if(webcam){
+        webcam.stop();
+        document.getElementById("status").innerText = "Camera Stopped";
+    }
+}
+
+// ---------------- LOOP ----------------
+async function loop(){
+    if(!webcam) return;
+
+    webcam.update();
+    await predict(webcam.canvas);
+
+    requestAnimationFrame(loop);
+}
+
+// ---------------- PREDICT ----------------
+async function predict(input){
+
+    const predictions = await model.predict(input);
+
+    let best = predictions[0];
+
+    for(let p of predictions){
+        if(p.probability > best.probability){
+            best = p;
+        }
+    }
+
+    let confidence = Math.round(best.probability * 100);
+
+    document.getElementById("result").innerText =
+        `Prediction: ${best.className} (${confidence}%)`;
+
+    if(confidence > 50){
+        showAdvice(best.className);
+    }
+}
+
+// ---------------- IMAGE UPLOAD ----------------
+async function uploadImage(event){
+
+    await loadModel();
+
+    const file = event.target.files[0];
+    if(!file) return;
+
+    stopCamera();
+
+    const img = document.getElementById("preview");
+    img.style.display = "block";
+    img.src = URL.createObjectURL(file);
+
+    img.onload = async () => {
+        const prediction = await model.predict(img);
+
+        let best = prediction[0];
+
+        for(let p of prediction){
+            if(p.probability > best.probability){
+                best = p;
+            }
+        }
+
+        let confidence = Math.round(best.probability * 100);
+
+        document.getElementById("result").innerText =
+            `Prediction: ${best.className} (${confidence}%)`;
+
+        if(confidence > 50){
+            showAdvice(best.className);
+        }
+    };
+}
+
+// ---------------- ADVICE ----------------
+function showAdvice(label){
+
+    const db = {
+
+        "First_degree_burn": `
+        <h3>🔥 First Degree Burn</h3>
+        <ul>
+            <li>Cool under running water 10–15 min</li>
+            <li>Apply aloe vera</li>
+            <li>Cover with clean gauze</li>
+        </ul>`,
+
+        "Second_degree_burn": `
+        <h3>🫧 Second Degree Burn</h3>
+        <ul>
+            <li>Cool water immediately</li>
+            <li>Do NOT pop blisters</li>
+            <li>Seek medical help if large area</li>
+        </ul>`,
+
+        "Sprain": `
+        <h3>🦶 Sprain</h3>
+        <ul>
+            <li>Rest</li>
+            <li>Ice</li>
+            <li>Compression</li>
+            <li>Elevation</li>
+        </ul>`
+    };
+
+    document.getElementById("advice").innerHTML =
+        db[label] || "No advice available";
+}
+
+</script>
+
+</body>
+</html>
