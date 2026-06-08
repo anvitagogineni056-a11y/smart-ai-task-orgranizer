@@ -1,2 +1,2 @@
-# first-aid-ai-assistant
-An AI-powered first-aid assistant web app that uses computer vision to detect injuries and provide instant emergency care guidance. Built with HTML, JavaScript, and Teachable Machine.
+# smart-to-do-list
+An AI-powered to-do list is like a smart assistant that organizes your tasks, sets priorities, and plans your day automatically based on your habits and deadlines.
