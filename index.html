@@ -1,160 +1,277 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Awesome To-Do List</title>
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Segoe UI, sans-serif;
-        }
+<meta charset="UTF-8">
+<title>Productivity Dashboard</title>
 
-        body{
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            background:linear-gradient(135deg,#6a11cb,#2575fc);
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:sans-serif;
+}
 
-        .container{
-            width:400px;
-            background:white;
-            padding:25px;
-            border-radius:20px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.2);
-        }
+body{
+    background:#111827;
+    color:white;
+    transition:.3s;
+}
 
-        h1{
-            text-align:center;
-            margin-bottom:20px;
-            color:#333;
-        }
+.light{
+    background:#f4f4f4;
+    color:black;
+}
 
-        .input-area{
-            display:flex;
-            gap:10px;
-        }
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
 
-        input{
-            flex:1;
-            padding:12px;
-            border:2px solid #ddd;
-            border-radius:10px;
-            outline:none;
-        }
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
 
-        button{
-            padding:12px 18px;
-            border:none;
-            border-radius:10px;
-            background:#2575fc;
-            color:white;
-            cursor:pointer;
-            transition:0.3s;
-        }
+.controls{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr auto;
+    gap:10px;
+}
 
-        button:hover{
-            background:#1d5fd0;
-        }
+input,select,button{
+    padding:10px;
+    border:none;
+    border-radius:10px;
+}
 
-        ul{
-            list-style:none;
-            margin-top:20px;
-        }
+button{
+    cursor:pointer;
+}
 
-        li{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:12px;
-            margin-top:10px;
-            background:#f4f4f4;
-            border-radius:10px;
-        }
+.task{
+    margin-top:15px;
+    padding:15px;
+    border-radius:15px;
+    background:#1f2937;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-        .completed{
-            text-decoration:line-through;
-            color:gray;
-        }
+.light .task{
+    background:white;
+}
 
-        .task-buttons button{
-            margin-left:5px;
-            padding:6px 10px;
-        }
+.high{border-left:6px solid red;}
+.medium{border-left:6px solid orange;}
+.low{border-left:6px solid green;}
 
-        .stats{
-            text-align:center;
-            margin-top:15px;
-            color:#555;
-        }
-    </style>
+.completed{
+    text-decoration:line-through;
+    opacity:.6;
+}
+
+.progress{
+    height:20px;
+    background:#333;
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
+}
+
+.bar{
+    height:100%;
+    width:0%;
+    background:lime;
+}
+
+.stats{
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <h1>✨ My To-Do List</h1>
 
-    <div class="input-area">
-        <input type="text" id="taskInput" placeholder="Add a task...">
-        <button onclick="addTask()">Add</button>
-    </div>
+<h1>🚀 Productivity Dashboard</h1>
 
-    <ul id="taskList"></ul>
+<div class="stats">
+    <p>Total: <span id="total">0</span></p>
+    <p>Completed: <span id="completed">0</span></p>
+</div>
 
-    <div class="stats">
-        Tasks: <span id="count">0</span>
-    </div>
+<div class="progress">
+    <div class="bar" id="bar"></div>
+</div>
+
+<div class="controls">
+    <input id="taskInput" placeholder="New Task">
+    
+    <select id="category">
+        <option>School</option>
+        <option>Personal</option>
+        <option>Work</option>
+    </select>
+
+    <select id="priority">
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+    </select>
+
+    <input type="date" id="date">
+
+    <button onclick="addTask()">Add</button>
+</div>
+
+<br>
+
+<input id="search"
+placeholder="🔍 Search Tasks"
+onkeyup="renderTasks()"
+style="width:100%;">
+
+<br><br>
+
+<button onclick="toggleTheme()">🌙 Theme</button>
+
+<div id="taskList"></div>
+
 </div>
 
 <script>
-let count = 0;
 
-function addTask() {
-    const input = document.getElementById("taskInput");
-    const taskText = input.value.trim();
+let tasks =
+JSON.parse(localStorage.getItem("tasks")) || [];
 
-    if(taskText === "") return;
-
-    const li = document.createElement("li");
-
-    const span = document.createElement("span");
-    span.textContent = taskText;
-
-    const buttons = document.createElement("div");
-    buttons.className = "task-buttons";
-
-    const doneBtn = document.createElement("button");
-    doneBtn.textContent = "✔️";
-    doneBtn.onclick = () => {
-        span.classList.toggle("completed");
-    };
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "🗑️";
-    deleteBtn.onclick = () => {
-        li.remove();
-        count--;
-        updateCount();
-    };
-
-    buttons.appendChild(doneBtn);
-    buttons.appendChild(deleteBtn);
-
-    li.appendChild(span);
-    li.appendChild(buttons);
-
-    document.getElementById("taskList").appendChild(li);
-
-    input.value = "";
-    count++;
-    updateCount();
+function save(){
+ localStorage.setItem(
+ "tasks",
+ JSON.stringify(tasks)
+ );
 }
 
-function updateCount(){
-    document.getElementById("count").textContent = count;
+function addTask(){
+
+ let text =
+ document.getElementById("taskInput").value;
+
+ if(!text.trim()) return;
+
+ tasks.push({
+   text,
+   category:
+   category.value,
+   priority:
+   priority.value,
+   date:
+   date.value,
+   done:false
+ });
+
+ document.getElementById("taskInput").value="";
+
+ renderTasks();
 }
+
+function renderTasks(){
+
+ let search =
+ document.getElementById("search")
+ .value.toLowerCase();
+
+ let list =
+ document.getElementById("taskList");
+
+ list.innerHTML="";
+
+ tasks.forEach((task,i)=>{
+
+ if(!task.text.toLowerCase()
+ .includes(search)) return;
+
+ let div=document.createElement("div");
+
+ div.className=
+ task ${task.priority};
+
+ div.innerHTML=`
+ <div>
+ <h3 class="${task.done?'completed':''}">
+ ${task.text}
+ </h3>
+ <small>
+ ${task.category} |
+ ${task.date}
+ </small>
+ </div>
+
+ <div>
+ <button onclick="completeTask(${i})">
+ ✔️
+ </button>
+
+ <button onclick="deleteTask(${i})">
+ 🗑️
+ </button>
+ </div>
+ `;
+
+ list.appendChild(div);
+ });
+
+ updateStats();
+ save();
+}
+
+function completeTask(i){
+ tasks[i].done=!tasks[i].done;
+ renderTasks();
+}
+
+function deleteTask(i){
+ tasks.splice(i,1);
+ renderTasks();
+}
+
+function updateStats(){
+
+ let total=tasks.length;
+
+ let completed=
+ tasks.filter(t=>t.done).length;
+
+ document.getElementById(
+ "total"
+ ).innerText=total;
+
+ document.getElementById(
+ "completed"
+ ).innerText=completed;
+
+ let percent=
+ total===0?0:
+ (completed/total)*100;
+
+ document.getElementById(
+ "bar"
+ ).style.width=
+ percent+"%";
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("light");
+}
+
+renderTasks();
+
 </script>
+
 </body>
 </html>
