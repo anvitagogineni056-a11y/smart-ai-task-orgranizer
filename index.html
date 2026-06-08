@@ -156,35 +156,28 @@ function save(){
  JSON.stringify(tasks)
  );
 }
+function addTask() {
+    const text = document.getElementById("taskInput").value;
+    const category = document.getElementById("category").value;
+    const priority = document.getElementById("priority").value;
+    const date = document.getElementById("date").value;
 
-function addTask(){
+    if (text.trim() === "") {
+        alert("Please enter a task");
+        return;
+    }
 
- let text =
- document.getElementById("taskInput").value;
+    tasks.push({
+        text: text,
+        category: category,
+        priority: priority,
+        date: date,
+        done: false
+    });
 
- if(!text.trim()) return;
+    document.getElementById("taskInput").value = "";
 
- const category =
-document.getElementById("category").value;
-
-const priority =
-document.getElementById("priority").value;
-
-const date =
-document.getElementById("date").value;
-
-tasks.push({
-   text: text,
-   category: category,
-   priority: priority,
-   date: date,
-   done: false
-});
- });
-
- document.getElementById("taskInput").value="";
-
- renderTasks();
+    renderTasks();
 }
 
 function renderTasks(){
