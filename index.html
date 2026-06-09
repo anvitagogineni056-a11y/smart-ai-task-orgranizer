@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Flow Organise</title>
+    <title>Focus</title>
     <style>
-        /* Premium Google Font Import */
         @import url('https://googleapis.com');
         
         * {
@@ -15,8 +14,9 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
+        /* Deep, ambient space/cyber gradient background */
         body {
-            background: linear-gradient(135deg, #111e16 0%, #1c3325 50%, #2a4d37 100%);
+            background: radial-gradient(circle at 50% 50%, #12131a 0%, #08090c 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,20 +25,21 @@
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Card Wrapper */
+        /* Advanced Cyber-Glass Container Card */
         .todo-container {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(20, 21, 28, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             width: 100%;
             max-width: 440px;
-            padding: 40px 30px;
-            border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 80px -20px rgba(8, 20, 13, 0.7);
+            padding: 40px 32px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.8),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* Header Layout with Progress Circle */
+        /* Layout Structure for Layout Header */
         .header-section {
             display: flex;
             justify-content: space-between;
@@ -47,30 +48,32 @@
         }
 
         h2 {
-            color: #f1f7f3;
-            font-size: 26px;
+            color: #ffffff;
+            font-size: 28px;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
 
         .subtitle {
-            color: #8da387;
+            color: #64748b;
             font-size: 13px;
             margin-bottom: 30px;
             display: block;
+            font-weight: 500;
         }
 
-        /* Dynamic SVG Progress Ring */
+        /* Precision Neon SVG Progress Dial */
         .progress-ring-container {
             position: relative;
-            width: 50px;
-            height: 50px;
+            width: 56px;
+            height: 56px;
         }
 
         .progress-ring-circle {
-            transition: stroke-dashoffset 0.35s;
+            transition: stroke-dashoffset 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
+            filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.4));
         }
 
         .progress-text {
@@ -78,12 +81,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: #c2d8b9;
-            font-size: 11px;
+            color: #cbd5e1;
+            font-size: 12px;
             font-weight: 700;
         }
 
-        /* Glowing Minimalist Input */
+        /* Minimalist Interactive Input Box */
         .input-section {
             position: relative;
             margin-bottom: 25px;
@@ -91,24 +94,26 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             font-size: 15px;
-            color: #f1f7f3;
+            color: #f8fafc;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         input[type="text"]::placeholder {
-            color: #556e5a;
+            color: #475569;
         }
 
         input[type="text"]:focus {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(194, 216, 185, 0.5);
-            box-shadow: 0 0 20px rgba(194, 216, 185, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: #6366f1;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15),
+                        inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         ul {
@@ -122,50 +127,50 @@
             width: 0px;
         }
 
-        /* Swipeable Interactive Container */
+        /* Swipe-to-Delete Slide Container */
         .task-wrapper {
             position: relative;
             margin-bottom: 12px;
             overflow: hidden;
-            border-radius: 18px;
-            animation: sproutIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 16px;
+            animation: springIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Hidden Background revealing the delete action */
+        /* Hidden contextual backdrop revealing the gesture delete */
         .delete-background {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent 40%, #db5a5a 100%);
+            background: linear-gradient(90deg, transparent 30%, #ef4444 100%);
             display: flex;
             align-items: center;
             justify-content: flex-end;
             padding-right: 24px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            border-radius: 18px;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            border-radius: 16px;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s ease;
         }
 
-        /* Foreground Task Card */
+        /* Premium Interactive Dynamic Task Card */
         li {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 18px 22px;
-            border-radius: 18px;
-            color: #e2ede5;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 18px 24px;
+            border-radius: 16px;
+            color: #cbd5e1;
             font-size: 15px;
             font-weight: 500;
             cursor: grab;
             user-select: none;
             position: relative;
             z-index: 2;
-            transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.1s;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
 
         li:active {
@@ -173,22 +178,22 @@
         }
 
         li:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(194, 216, 185, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
             color: #ffffff;
         }
 
-        /* Completed Leaf State */
+        /* Finished Active Application State */
         li.completed {
-            background: rgba(15, 28, 20, 0.4);
-            border-color: transparent;
-            color: #516956;
+            background: rgba(99, 102, 241, 0.06);
+            border-color: rgba(99, 102, 241, 0.15);
+            color: #475569;
             text-decoration: line-through;
         }
 
-        @keyframes sproutIn {
-            from { opacity: 0; transform: translateY(15px) scale(0.96); filter: blur(2px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        @keyframes springIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
     </style>
 </head>
@@ -196,20 +201,20 @@
 
     <div class="todo-container">
         <div class="header-section">
-            <h2>Core Flow Organize</h2>
+            <h2>Focus</h2>
             <div class="progress-ring-container">
-                <svg width="50" height="50">
-                    <circle stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="transparent" r="22" cx="25" cy="25"/>
-                    <circle class="progress-ring-circle" id="progressRing" stroke="#c2d8b9" stroke-width="4" fill="transparent" r="22" cx="25" cy="25" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+                <svg width="56" height="56">
+                    <circle stroke="rgba(255,255,255,0.03)" stroke-width="4" fill="transparent" r="24" cx="28" cy="28"/>
+                    <circle class="progress-ring-circle" id="progressRing" stroke="#6366f1" stroke-width="4" fill="transparent" r="24" cx="28" cy="28" stroke-dasharray="150.8" stroke-dashoffset="150.8"/>
                 </svg>
                 <div class="progress-text" id="progressText">0%</div>
             </div>
         </div>
         
-        <span class="subtitle">🌿 Tap to complete. Swipe left significantly to delete.</span>
+        <span class="subtitle">🎯 Tap to toggle status. Swipe left over halfway to clear.</span>
         
         <div class="input-section">
-            <input type="text" id="taskInput" placeholder="Sow a new goal..." autocomplete="off">
+            <input type="text" id="taskInput" placeholder="Initialize a new objective..." autocomplete="off">
         </div>
 
         <ul id="taskList"></ul>
@@ -221,26 +226,37 @@
         const progressRing = document.getElementById('progressRing');
         const progressText = document.getElementById('progressText');
         
-        let tasks = JSON.parse(localStorage.getItem('nature_tasks')) || [];
+        // Dynamic HTML5 Ambient Audio API synthesis (No external assets required)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, type, duration) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
 
-        // App Initialization
+        let tasks = JSON.parse(localStorage.getItem('advanced_tasks')) || [];
+
         window.addEventListener('DOMContentLoaded', renderTasks);
-
-        taskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTask();
-        });
+        taskInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTask(); });
 
         function addTask() {
             const text = taskInput.value.trim();
             if (!text) return;
-
             tasks.push({ id: Date.now(), text: text, completed: false });
+            playTone(587.33, 'sine', 0.15); // Add chime
             saveAndUpdate();
             taskInput.value = '';
         }
 
         function saveAndUpdate() {
-            localStorage.setItem('nature_tasks', JSON.stringify(tasks));
+            localStorage.setItem('advanced_tasks', JSON.stringify(tasks));
             renderTasks();
         }
 
@@ -250,9 +266,8 @@
             const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
             
             progressText.innerText = ${percentage}%;
-            const circumference = 2 * Math.PI * 22;
-            const offset = circumference - (percentage / 100) * circumference;
-            progressRing.style.strokeDashoffset = offset;
+            const circumference = 2 * Math.PI * 24;
+            progressRing.style.strokeDashoffset = circumference - (percentage / 100) * circumference;
         }
 
         function renderTasks() {
@@ -263,7 +278,7 @@
 
                 const delBg = document.createElement('div');
                 delBg.className = 'delete-background';
-                delBg.innerText = 'RELEASE';
+                delBg.innerText = 'DELETE';
 
                 const li = document.createElement('li');
                 li.innerText = task.text;
@@ -273,12 +288,12 @@
                 li.addEventListener('click', () => {
                     if (!isDragging) {
                         task.completed = !task.completed;
+                        playTone(task.completed ? 880 : 440, 'triangle', 0.12); // Complete/uncomplete tones
                         saveAndUpdate();
                     }
                 });
 
-                let startX = 0;
-                let currentX = 0;
+                let startX = 0;                let currentX = 0;
 
                 const startDrag = (e) => {
                     startX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
@@ -290,22 +305,21 @@
                 const moveDrag = (e) => {
                     const x = e.type.includes('touch') ? e.touches.clientX : e.clientX;
                     currentX = x - startX;
-                    
                     if (currentX < 0) {
                         isDragging = true;
-                        const dragFactor = Math.max(currentX, -160);
-                        li.style.transform = translateX(${dragFactor}px);
+                        li.style.transform = translateX(${Math.max(currentX, -180)}px);
                     }
                 };
 
                 const endDrag = () => {
-                    li.style.transition = 'transform 0.3s ease';
-                    if (currentX < -120) {
+                    li.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    if (currentX < -130) {
                         li.style.transform = 'translateX(-120%)';
                         wrapper.style.transition = 'all 0.3s ease';
-                        wrapper.style.height = '0px';                        wrapper.style.margin = '0px';
+                        wrapper.style.height = '0px';
+                        wrapper.style.margin = '0px';
                         wrapper.style.opacity = '0';
-                        
+                        playTone(220, 'sawtooth', 0.2); // Delete sound effect
                         setTimeout(() => {
                             tasks = tasks.filter(t => t.id !== task.id);
                             saveAndUpdate();
@@ -329,7 +343,6 @@
                 wrapper.appendChild(li);
                 taskList.appendChild(wrapper);
             });
-
             updateProgress();
         }
     </script>
