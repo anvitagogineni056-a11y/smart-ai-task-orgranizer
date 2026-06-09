@@ -244,8 +244,7 @@
         let tasks = JSON.parse(localStorage.getItem('advanced_tasks')) || [];
 
         window.addEventListener('DOMContentLoaded', renderTasks);
-        taskInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTask(); });
-
+        taskInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addTask(); });
         function addTask() {
             const text = taskInput.value.trim();
             if (!text) return;
