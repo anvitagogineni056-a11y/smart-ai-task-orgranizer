@@ -3,336 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forest Flow</title>
+    <title>Nature Core Focus</title>
     <style>
-        /* Premium Google Font Import */
-        @import url('https://googleapis.com');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
         body {
-            background: linear-gradient(135deg, #111e16 0%, #1c3325 50%, #2a4d37 100%);
-            min-height: 100vh;
+            background-color: #f4f7f5;
+            color: #2e4a3f;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 360px;
             padding: 20px;
-            overflow-x: hidden;
         }
-
-        /* Glassmorphism Card Wrapper */
-        .todo-container {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            width: 100%;
-            max-width: 440px;
-            padding: 40px 30px;
-            border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 80px -20px rgba(8, 20, 13, 0.7);
-        }
-
-        /* Header Layout with Progress Circle */
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        h2 {
-            color: #f1f7f3;
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            color: #8da387;
-            font-size: 13px;
-            margin-bottom: 30px;
-            display: block;
-        }
-
-        /* Dynamic SVG Progress Ring */
-        .progress-ring-container {
-            position: relative;
-            width: 50px;
-            height: 50px;
-        }
-
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.35s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #c2d8b9;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* Glowing Minimalist Input */
-        .input-section {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            font-size: 15px;
-            color: #f1f7f3;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]::placeholder {
-            color: #556e5a;
-        }
-
-        input[type="text"]:focus {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(194, 216, 185, 0.5);
-            box-shadow: 0 0 20px rgba(194, 216, 185, 0.1);
-        }
-
-        ul {
-            list-style: none;
-            max-height: 380px;
-            overflow-y: auto;
-            padding-right: 2px;
-        }
-
-        ul::-webkit-scrollbar {
-            width: 0px;
-        }
-
-        /* Swipeable Interactive Container */
-        .task-wrapper {
-            position: relative;
-            margin-bottom: 12px;
-            overflow: hidden;
-            border-radius: 18px;
-            animation: sproutIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Hidden Background revealing the delete action */
-        .delete-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 40%, #db5a5a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 24px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            border-radius: 18px;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        /* Foreground Task Card */
-        li {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 18px 22px;
-            border-radius: 18px;
-            color: #e2ede5;
-            font-size: 15px;
+        h1 {
+            font-size: 0.9rem;
             font-weight: 500;
-            cursor: grab;
-            user-select: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            color: #6b8e7d;
+            text-align: center;
+        }
+        .score-tracker {
+            font-size: 0.8rem;
+            color: #8fa89b;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            height: 15px;
+        }
+        .focus-section {
+            margin-bottom: 45px;
+        }
+        .focus-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px dashed #cedbd0;
+            background: transparent;
+            padding: 8px 0;
+            font-size: 1.35rem;
+            color: #2e4a3f;
+            text-align: center;
+            outline: none;
+        }
+        .focus-input::placeholder {
+            color: #cbd5c0;
+            font-style: italic;
+        }
+        .todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .todo-item input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+        .checkmark {
+            height: 15px;
+            width: 15px;
+            border: 1px solid #a3b899;
+            border-radius: 4px;
+            margin-right: 14px;
+            display: inline-block;
             position: relative;
-            z-index: 2;
-            transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.1s;
+            cursor: pointer;
         }
-
-        li:active {
-            cursor: grabbing;
+        .todo-item input[type="checkbox"]:checked ~ .checkmark {
+            background-color: #a3b899;
         }
-
-        li:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(194, 216, 185, 0.2);
-            color: #ffffff;
+        .todo-item input[type="checkbox"]:checked ~ .checkmark:after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 3px;
+            height: 7px;
+            border: solid #f4f7f5;
+            border-width: 0.12rem 0.12rem 0 0;
+            transform: scaleX(-1) rotate(135deg);
+            transform-origin: left top;
         }
-
-        /* Completed Leaf State */
-        li.completed {
-            background: rgba(15, 28, 20, 0.4);
-            border-color: transparent;
-            color: #516956;
+        .todo-text {
+            font-size: 1rem;
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            color: #2e4a3f;
+            outline: none;
+        }
+        .todo-text::placeholder {
+            color: #cbd5c0;
+        }
+        .completed .todo-text {
+            color: #a0b5a7;
             text-decoration: line-through;
-        }
-
-        @keyframes sproutIn {
-            from { opacity: 0; transform: translateY(15px) scale(0.96); filter: blur(2px); }
-            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="todo-container">
-        <div class="header-section">
-            <h2>Forest Flow</h2>
-            <div class="progress-ring-container">
-                <svg width="50" height="50">
-                    <circle stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="transparent" r="22" cx="25" cy="25"/>
-                    <circle class="progress-ring-circle" id="progressRing" stroke="#c2d8b9" stroke-width="4" fill="transparent" r="22" cx="25" cy="25" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
-                </svg>
-                <div class="progress-text" id="progressText">0%</div>
-            </div>
+    <div class="container">
+        <div class="focus-section">
+            <h1>Core Focus</h1>
+            <div class="score-tracker" id="scoreTracker"></div>
+            <input type="text" class="focus-input" placeholder="What is your main intention?" maxlength="60">
         </div>
-        
-        <span class="subtitle">🌿 Tap to complete. Swipe left significantly to delete.</span>
-        
-        <div class="input-section">
-            <input type="text" id="taskInput" placeholder="Sow a new goal..." autocomplete="off">
-        </div>
-
-        <ul id="taskList"></ul>
+        <ul class="todo-list" id="todoList"></ul>
     </div>
 
     <script>
-        const taskInput = document.getElementById('taskInput');
-        const taskList = document.getElementById('taskList');
-        const progressRing = document.getElementById('progressRing');
-        const progressText = document.getElementById('progressText');
-        
-        let tasks = JSON.parse(localStorage.getItem('nature_tasks')) || [];
+        const todoList = document.getElementById('todoList');
+        const scoreTracker = document.getElementById('scoreTracker');
+        const maxItems = 6;
 
-        // App Initialization
-        window.addEventListener('DOMContentLoaded', renderTasks);
-
-        taskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTask();
-        });
-
-        function addTask() {
-            const text = taskInput.value.trim();
-            if (!text) return;
-
-            tasks.push({ id: Date.now(), text: text, completed: false });
-            saveAndUpdate();
-            taskInput.value = '';
+        function updateScore() {
+            const rows = todoList.querySelectorAll('.todo-item');
+            let total = 0, completed = 0;
+            rows.forEach(row => {
+                const text = row.querySelector('.todo-text').value.trim();
+                const checked = row.querySelector('input[type="checkbox"]').checked;
+                if (text !== '') {
+                    total++;
+                    if (checked) completed++;
+                }
+            });
+            scoreTracker.textContent = total > 0 ? ${completed} / ${total} completed : '';
         }
 
-        function saveAndUpdate() {
-            localStorage.setItem('nature_tasks', JSON.stringify(tasks));
-            renderTasks();
-        }
+        function createTodoRow(text = '', isChecked = false) {
+            const li = document.createElement('li');
+            li.className = todo-item ${isChecked ? 'completed' : ''};
+            li.innerHTML = `
+                <label style="display: flex; align-items: center; width: 100%;">
+                    <input type="checkbox" ${isChecked ? 'checked' : ''}>
+                    <span class="checkmark"></span>
+                    <input type="text" class="todo-text" value="${text}" placeholder="Add a task...">
+                </label>
+            `;
 
-        function updateProgress() {
-            const total = tasks.length;
-            const completed = tasks.filter(t => t.completed).length;
-            const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
-            
-            progressText.innerText = ${percentage}%;
-            const circumference = 2 * Math.PI * 22;
-            const offset = circumference - (percentage / 100) * circumference;
-            progressRing.style.strokeDashoffset = offset;
-        }
+            const checkbox = li.querySelector('input[type="checkbox"]');
+            const textInput = li.querySelector('.todo-text');
 
-        function renderTasks() {
-            taskList.innerHTML = '';
-            tasks.forEach(task => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'task-wrapper';
-
-                const delBg = document.createElement('div');
-                delBg.className = 'delete-background';
-                delBg.innerText = 'RELEASE';
-
-                const li = document.createElement('li');
-                li.innerText = task.text;
-                if (task.completed) li.classList.add('completed');
-
-                let isDragging = false;
-                li.addEventListener('click', () => {
-                    if (!isDragging) {
-                        task.completed = !task.completed;
-                        saveAndUpdate();
-                    }
-                });
-
-                let startX = 0;
-                let currentX = 0;
-
-                const startDrag = (e) => {
-                    startX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
-                    li.style.transition = 'none';
-                    delBg.style.opacity = '1';
-                    isDragging = false;
-                };
-
-                const moveDrag = (e) => {
-                    const x = e.type.includes('touch') ? e.touches.clientX : e.clientX;
-                    currentX = x - startX;
-                    
-                    if (currentX < 0) {
-                        isDragging = true;
-                        const dragFactor = Math.max(currentX, -160);
-                        li.style.transform = translateX(${dragFactor}px);
-                    }
-                };
-
-                const endDrag = () => {
-                    li.style.transition = 'transform 0.3s ease';
-                    if (currentX < -120) {
-                        li.style.transform = 'translateX(-120%)';
-                        wrapper.style.transition = 'all 0.3s ease';
-                        wrapper.style.height = '0px';
-wrapper.style.margin = '0px';
-                        wrapper.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            tasks = tasks.filter(t => t.id !== task.id);
-                            saveAndUpdate();
-                        }, 300);
-                    } else {
-                        li.style.transform = 'translateX(0px)';
-                        setTimeout(() => delBg.style.opacity = '0', 200);
-                    }
-                    currentX = 0;
-                };
-
-                li.addEventListener('mousedown', startDrag);
-                window.addEventListener('mousemove', moveDrag);
-                window.addEventListener('mouseup', endDrag);
-
-                li.addEventListener('touchstart', startDrag);
-                li.addEventListener('touchmove', moveDrag);
-                li.addEventListener('touchend', endDrag);
-
-                wrapper.appendChild(delBg);
-                wrapper.appendChild(li);
-                taskList.appendChild(wrapper);
+            checkbox.addEventListener('change', () => {
+                li.classList.toggle('completed', checkbox.checked);
+                updateScore();
+                saveData();
             });
 
-            updateProgress();
+            textInput.addEventListener('input', () => {
+                manageRows();
+                updateScore();
+                saveData();
+            });
+
+            textInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const next = li.nextElementSibling;
+                    if (next) next.querySelector('.todo-text').focus();
+                }
+                if (e.key === 'Backspace' && textInput.value === '') {
+                    const prev = li.previousElementSibling;
+                    if (todoList.querySelectorAll('.todo-item').length > 1) {
+                        e.preventDefault();
+                        li.remove();
+                        if (prev) {
+                            const input = prev.querySelector('.todo-text');
+                            input.focus();
+                            const val = input.value;
+                            input.value = '';
+                            input.value = val;
+                        }
+                        manageRows();
+                        updateScore();
+                        saveData();
+                    }
+                }
+            });
+            return li;
         }
+
+        function manageRows() {
+            const rows = todoList.querySelectorAll('.todo-item');
+            if (rows.length === 0) {
+                todoList.appendChild(createTodoRow());
+                return;
+            }
+            const lastInput = rows[rows.length - 1].querySelector('.todo-text');
+            if (lastInput.value.trim() !== '' && rows.length < maxItems) {
+                todoList.appendChild(createTodoRow());
+            }
+        }
+
+        function saveData() {
+            const focusVal = document.querySelector('.focus-input').value;
+            const todos = [];
+            todoList.querySelectorAll('.todo-item').forEach(row => {
+                const text = row.querySelector('.todo-text').value;
+                const checked = row.querySelector('input[type="checkbox"]').checked;
+                if (text.trim() !== '' || row === todoList.lastElementChild) {
+                    todos.push({ text, checked });
+                }
+            });
+            localStorage.setItem('minimalNatureFocus', JSON.stringify({ focus: focusVal, todos }));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('minimalNatureFocus');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.querySelector('.focus-input').value = data.focus || '';
+                if (data.todos) {
+                    data.todos.forEach(todo => todoList.appendChild(createTodoRow(todo.text, todo.checked)));
+                }
+            }
+            manageRows();
+            updateScore();
+        }
+
+        document.querySelector('.focus-input').addEventListener('input', saveData);
+        loadData();
     </script>
 </body>
 </html>
