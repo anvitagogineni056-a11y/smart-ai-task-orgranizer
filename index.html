@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sleek To-Do List</title>
+    <title>Nature Focus List</title>
     <style>
-        /* Modern Reset and Google Font */
         @import url('https://googleapis.com');
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Quicksand', sans-serif;
         }
 
-        /* Fluid Gradient Background */
+        /* Earthy, morning-fog nature gradient background */
         body {
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background: linear-gradient(135deg, #1e2f23 0%, #2d4a36 50%, #405d47 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,117 +24,136 @@
             padding: 20px;
         }
 
-        /* Glassmorphism Container Card */
+        /* Organic Glass Container - Leaf Template */
         .todo-container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             width: 100%;
-            max-width: 450px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 440px;
+            padding: 40px 35px;
+            border-radius: 32px; /* Smooth, rounded organic corners */
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 30px 60px -15px rgba(15, 28, 20, 0.6);
         }
 
         h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: #f1f7f3;
+            font-size: 26px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
 
-        /* Input Container Layout */
+        .subtitle {
+            color: #a3b899;
+            font-size: 13px;
+            margin-bottom: 30px;
+            display: block;
+            font-weight: 500;
+        }
+
         .input-section {
-            display: flex;
-            margin-bottom: 25px;
+            position: relative;
+            margin-bottom: 35px;
         }
 
+        /* Sage Green Border Bottom */
         input[type="text"] {
-            flex: 1;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 15px;
+            width: 100%;
+            padding: 16px 4px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(163, 184, 153, 0.2);
+            font-size: 16px;
+            color: #f1f7f3;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
         }
 
+        input[type="text"]::placeholder {
+            color: #657e6b;
+        }
+
+        /* Gold/Sprout glowing focus effect */
         input[type="text"]:focus {
-            border-color: #6c5ce7;
-            box-shadow: 0 0 12px rgba(108, 92, 231, 0.2);
+            border-bottom-color: #c2d8b9;
+            box-shadow: 0 1px 0 0 #c2d8b9;
         }
 
-        /* Smooth List Rendering */
         ul {
             list-style: none;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
 
+        ul::-webkit-scrollbar {
+            width: 4px;
+        }
+        ul::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        /* Elegant Organic List Item Cards */
         li {
-            background: #f8f9fa;
-            padding: 14px 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 18px 22px;
+            border-radius: 18px;
+            margin-bottom: 14px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            border-left: 4px solid #6c5ce7;
-            animation: fadeIn 0.4s ease;
+            color: #e2ede5;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            animation: sproutIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-left: 3px solid transparent;
         }
 
         li:hover {
-            transform: translateX(4px);
-            background: #f1f3f5;
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(194, 216, 185, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px) scale(1.01);
+            border-left: 3px solid #c2d8b9;
         }
 
-        /* Dynamic Interaction Classes */
-        .task-text {
-            cursor: pointer;
-            flex: 1;
-            color: #495057;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
-
+        /* State: Completed (Fades out gently like autumn leaves) */
         li.completed {
-            border-left-color: #2ecc71;
-            opacity: 0.6;
-        }
-
-        li.completed .task-text {
+            background: rgba(15, 28, 20, 0.3);
+            border-color: transparent;
+            color: #556f5b;
             text-decoration: line-through;
-            color: #adb5bd;
+            opacity: 0.4;
+            transform: translateY(0) scale(1);
+            border-left: 3px solid transparent;
         }
 
-        /* Sleek Delete Button */
-        .delete-btn {
-            background: #ff7675;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        /* Nature Micro-Animations */
+        @keyframes sproutIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.97); filter: blur(2px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        .delete-btn:hover {
-            background: #d63031;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes witherAway {
+            to { opacity: 0; transform: scale(0.95) translateY(10px); filter: blur(6px); }
         }
     </style>
 </head>
 <body>
 
     <div class="todo-container">
-        <h2>📝 My Tasks</h2>
+        <h2>🌿 Nature Focus</h2>
+        <span class="subtitle">Click once to complete. Double click to let go.</span>
         
         <div class="input-section">
-            <input type="text" id="taskInput" placeholder="Type task & press Enter...">
+            <input type="text" id="taskInput" placeholder="Grow a new task..." autocomplete="off">
         </div>
 
         <ul id="taskList"></ul>
@@ -145,7 +163,6 @@
         const taskInput = document.getElementById('taskInput');
         const taskList = document.getElementById('taskList');
 
-        // Capture Enter key press to submit task
         taskInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 addTask();
@@ -155,37 +172,23 @@
         function addTask() {
             const taskValue = taskInput.value.trim();
             
-            if (taskValue === '') {
-                return; // Silently do nothing if the input is empty
-            }
+            if (taskValue === '') return;
 
-            // Create list container element
             const li = document.createElement('li');
+            li.innerText = taskValue;
 
-            // Create clickable text span
-            const taskSpan = document.createElement('span');
-            taskSpan.className = 'task-text';
-            taskSpan.innerText = taskValue;
-            taskSpan.addEventListener('click', () => {
+            // Single click action: Complete task
+            li.addEventListener('click', () => {
                 li.classList.toggle('completed');
             });
 
-            // Create functional delete button
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerText = 'Delete';
-            deleteBtn.addEventListener('click', () => {
-                li.style.opacity = '0';
-                li.style.transform = 'scale(0.8)';
-                setTimeout(() => li.remove(), 300);
+            // Double click action: Delete task (wither animation)
+            li.addEventListener('dblclick', () => {
+                li.style.animation = 'witherAway 0.35s forwards';
+                setTimeout(() => li.remove(), 350);
             });
 
-            // Append elements into structure
-            li.appendChild(taskSpan);
-            li.appendChild(deleteBtn);
             taskList.appendChild(li);
-
-            // Clean the input box
             taskInput.value = '';
         }
     </script>
