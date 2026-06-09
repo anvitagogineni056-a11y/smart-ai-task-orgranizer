@@ -1,277 +1,193 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Productivity Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleek To-Do List</title>
+    <style>
+        /* Modern Reset and Google Font */
+        @import url('https://googleapis.com');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:sans-serif;
-}
+        /* Fluid Gradient Background */
+        body {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-body{
-    background:#111827;
-    color:white;
-    transition:.3s;
-}
+        /* Glassmorphism Container Card */
+        .todo-container {
+            background: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
 
-.light{
-    background:#f4f4f4;
-    color:black;
-}
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:20px;
-}
+        /* Input Container Layout */
+        .input-section {
+            display: flex;
+            margin-bottom: 25px;
+        }
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-}
+        input[type="text"] {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
 
-.controls{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr 1fr auto;
-    gap:10px;
-}
+        input[type="text"]:focus {
+            border-color: #6c5ce7;
+            box-shadow: 0 0 12px rgba(108, 92, 231, 0.2);
+        }
 
-input,select,button{
-    padding:10px;
-    border:none;
-    border-radius:10px;
-}
+        /* Smooth List Rendering */
+        ul {
+            list-style: none;
+        }
 
-button{
-    cursor:pointer;
-}
+        li {
+            background: #f8f9fa;
+            padding: 14px 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #6c5ce7;
+            animation: fadeIn 0.4s ease;
+        }
 
-.task{
-    margin-top:15px;
-    padding:15px;
-    border-radius:15px;
-    background:#1f2937;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+        li:hover {
+            transform: translateX(4px);
+            background: #f1f3f5;
+        }
 
-.light .task{
-    background:white;
-}
+        /* Dynamic Interaction Classes */
+        .task-text {
+            cursor: pointer;
+            flex: 1;
+            color: #495057;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
 
-.high{border-left:6px solid red;}
-.medium{border-left:6px solid orange;}
-.low{border-left:6px solid green;}
+        li.completed {
+            border-left-color: #2ecc71;
+            opacity: 0.6;
+        }
 
-.completed{
-    text-decoration:line-through;
-    opacity:.6;
-}
+        li.completed .task-text {
+            text-decoration: line-through;
+            color: #adb5bd;
+        }
 
-.progress{
-    height:20px;
-    background:#333;
-    border-radius:20px;
-    overflow:hidden;
-    margin:20px 0;
-}
+        /* Sleek Delete Button */
+        .delete-btn {
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.bar{
-    height:100%;
-    width:0%;
-    background:lime;
-}
+        .delete-btn:hover {
+            background: #d63031;
+        }
 
-.stats{
-    display:flex;
-    gap:20px;
-    margin-bottom:20px;
-}
-</style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <div class="todo-container">
+        <h2>📝 My Tasks</h2>
+        
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Type task & press Enter...">
+        </div>
 
-<h1>🚀 Productivity Dashboard</h1>
+        <ul id="taskList"></ul>
+    </div>
 
-<div class="stats">
-    <p>Total: <span id="total">0</span></p>
-    <p>Completed: <span id="completed">0</span></p>
-</div>
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const taskList = document.getElementById('taskList');
 
-<div class="progress">
-    <div class="bar" id="bar"></div>
-</div>
+        // Capture Enter key press to submit task
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
 
-<div class="controls">
-    <input id="taskInput" placeholder="New Task">
-    
-    <select id="category">
-        <option>School</option>
-        <option>Personal</option>
-        <option>Work</option>
-    </select>
+        function addTask() {
+            const taskValue = taskInput.value.trim();
+            
+            if (taskValue === '') {
+                return; // Silently do nothing if the input is empty
+            }
 
-    <select id="priority">
-        <option value="high">High</option>
-        <option value="medium">Medium</option>
-        <option value="low">Low</option>
-    </select>
+            // Create list container element
+            const li = document.createElement('li');
 
-    <input type="date" id="date">
+            // Create clickable text span
+            const taskSpan = document.createElement('span');
+            taskSpan.className = 'task-text';
+            taskSpan.innerText = taskValue;
+            taskSpan.addEventListener('click', () => {
+                li.classList.toggle('completed');
+            });
 
-    <button onclick="addTask()">Add</button>
-</div>
+            // Create functional delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerText = 'Delete';
+            deleteBtn.addEventListener('click', () => {
+                li.style.opacity = '0';
+                li.style.transform = 'scale(0.8)';
+                setTimeout(() => li.remove(), 300);
+            });
 
-<br>
+            // Append elements into structure
+            li.appendChild(taskSpan);
+            li.appendChild(deleteBtn);
+            taskList.appendChild(li);
 
-<input id="search"
-placeholder="🔍 Search Tasks"
-onkeyup="renderTasks()"
-style="width:100%;">
-
-<br><br>
-
-<button onclick="toggleTheme()">🌙 Theme</button>
-
-<div id="taskList"></div>
-
-</div>
-
-<script>
-
-let tasks =
-JSON.parse(localStorage.getItem("tasks")) || [];
-
-function save(){
- localStorage.setItem(
- "tasks",
- JSON.stringify(tasks)
- );
-}
-function addTask() {
-    const text = document.getElementById("taskInput").value;
-    const category = document.getElementById("category").value;
-    const priority = document.getElementById("priority").value;
-    const date = document.getElementById("date").value;
-
-    if (text.trim() === "") {
-        alert("Please enter a task");
-        return;
-    }
-
-    tasks.push({
-        text: text,
-        category: category,
-        priority: priority,
-        date: date,
-        done: false
-    });
-
-    document.getElementById("taskInput").value = "";
-
-    renderTasks();
-}
-
-function renderTasks(){
-
- let search =
- document.getElementById("search")
- .value.toLowerCase();
-
- let list =
- document.getElementById("taskList");
-
- list.innerHTML="";
-
- tasks.forEach((task,i)=>{
-
- if(!task.text.toLowerCase()
- .includes(search)) return;
-
- let div=document.createElement("div");
-
- div.className=
- task ${task.priority};
-
- div.innerHTML=`
- <div>
- <h3 class="${task.done?'completed':''}">
- ${task.text}
- </h3>
- <small>
- ${task.category} |
- ${task.date}
- </small>
- </div>
-
- <div>
- <button onclick="completeTask(${i})">
- ✔️
- </button>
-
- <button onclick="deleteTask(${i})">
- 🗑️
- </button>
- </div>
- `;
-
- list.appendChild(div);
- });
-
- updateStats();
- save();
-}
-
-function completeTask(i){
- tasks[i].done=!tasks[i].done;
- renderTasks();
-}
-
-function deleteTask(i){
- tasks.splice(i,1);
- renderTasks();
-}
-
-function updateStats(){
-
- let total=tasks.length;
-
- let completed=
- tasks.filter(t=>t.done).length;
-
- document.getElementById(
- "total"
- ).innerText=total;
-
- document.getElementById(
- "completed"
- ).innerText=completed;
-
- let percent=
- total===0?0:
- (completed/total)*100;
-
- document.getElementById(
- "bar"
- ).style.width=
- percent+"%";
-}
-
-function toggleTheme(){
- document.body.classList.toggle("light");
-}
-
-renderTasks();
-
-</script>
-
+            // Clean the input box
+            taskInput.value = '';
+        }
+    </script>
 </body>
+</html>
